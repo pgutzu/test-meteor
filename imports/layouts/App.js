@@ -6,7 +6,7 @@ import { withTracker } from 'meteor/react-meteor-data';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { BrowserRouter as Router, Switch } from 'react-router-dom';
-import { Layout, Row, Col, Card, Divider } from 'antd';
+import { Layout, Row, Col, Card, Divider, Modal } from 'antd';
 
 // import navbar
 import Navbar from '../ui/components/Navbar';
@@ -19,69 +19,112 @@ import Login from '../pages/Login';
 import Signup from '../pages/Signup';
 import Auth from '../pages/Auth';
 import Profile from '../pages/Profile';
+import Questionnaires from '../pages/Questionnaires';
+import Admin from '../pages/Admin';
 import MessagesList from '../pages/Chat/components/MessagesList';
+import TrackerReact from 'meteor/ultimatejs:tracker-react'
 
 // import Spinner
-import Spinner from '../ui/components/Spinner';
+import { StartQuestionarie } from '../api/startQuestionarie';
 
 // import hoc to pass additional props to routes
 import PropsRoute from '../pages/PropsRoute';
 import 'antd/dist/antd.css';
+import Questionnaries from '../pages/Questionnaires';
 
 const { Header, Content, Footer } = Layout;
 const { Meta } = Card;
-const App = props => (
-    <Router>
-        <div className="main-layout">
-            <Layout>
-                <Header>
-                    <PropsRoute component={Navbar} {...props} />
-                </Header>
-                <Row>
-                    <Col span={4}>
-                        <Card
-                            hoverable
-                            style={{ marginTop: 100 }}
-                            cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
-                        >
-                            <Meta title="Europe Street beat" description="www.instagram.com" />
-                        </Card>
-                    </Col>
-                    <Divider type="vertical" />
-                    <Col span={14} offset={1}>
-                        <Content style={{ overflow: 'auto', height: '83vh' }}>
-                            <main>
-                                <Switch>
-                                    <PropsRoute exact path="/" component={Events} {...props} />
-                                    <PropsRoute path="/join" component={JoinCode} {...props} />
-                                    <PropsRoute path="/users" component={Users} {...props} />
-                                    <PropsRoute path="/login" component={Login} {...props} />
-                                    <PropsRoute path="/signup" component={Signup} {...props} />
-                                    <PropsRoute path="/auth" component={Auth} {...props} />
-                                    <PropsRoute path="/profile" component={Profile} {...props} />
-                                    <PropsRoute path="/chat" component={MessagesList} {...props} />
 
-                                </Switch>
-                            </main>
-                        </Content>
-                    </Col>
-                    <Divider type="vertical" />
-                    <Col span={4} offset={1}>
-                        <Card
-                            hoverable
-                            style={{ marginTop: 100 }}
-                            cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
-                        >
-                            <Meta title="Europe Street beat" description="www.instagram.com" />
-                        </Card>
-                    </Col>
-                </Row>
-                <Footer style={{ textAlign: 'center' }}>Speed Coding © 2020 Created by 1000Geeks</Footer>
-            </Layout>
-        </div>
-    </Router>
 
-);
+class App extends TrackerReact(React.Component) {
+
+    state = {
+        visible: true
+    }
+
+    handleOk = e => {
+        this.setState({
+            visible: false,
+        });
+    };
+
+    render() {
+        const props = this.props;
+        if (props.loggedIn) {
+            return null;
+        }
+        return (
+            <Router>
+                <div className="main-layout">
+                    <Layout>
+                        <Header>
+                            <PropsRoute component={Navbar} {...props} />
+                        </Header>
+                        <Row>
+                            <Col span={4}>
+                                <Card
+                                    hoverable
+                                    style={{ marginTop: 100 }}
+                                    cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
+                                >
+                                    <Meta title="Europe Street beat" description="www.instagram.com" />
+                                </Card>
+                            </Col>
+                            <Divider type="vertical" />
+                            <Col span={14} offset={1}>
+                                <Content style={{ overflow: 'auto', height: '87vh' }}>
+                                    <main>
+                                        <Switch>
+                                            <PropsRoute exact path="/" component={Events} {...props} />
+                                            <PropsRoute path="/join" component={JoinCode} {...props} />
+                                            <PropsRoute path="/users" component={Users} {...props} />
+                                            <PropsRoute path="/login" component={Login} {...props} />
+                                            <PropsRoute path="/signup" component={Signup} {...props} />
+                                            <PropsRoute path="/auth" component={Auth} {...props} />
+                                            <PropsRoute path="/profile" component={Profile} {...props} />
+                                            <PropsRoute path="/chat" component={MessagesList} {...props} />
+                                            <PropsRoute path="/questionnaires" component={Questionnaires} {...props} />
+                                            {
+                                                Meteor.users.findOne({ _id: Meteor.userId() }) && Meteor.users.findOne({ _id: Meteor.userId() }).emails !== undefined ?
+                                                    Meteor.users.findOne({ _id: Meteor.userId() }).emails[0].address === "pgutzu@gmail.com" &&
+                                                    <PropsRoute path="/admin" component={Admin} {...props} />
+                                                    :
+                                                    null
+                                            }
+                                        </Switch>
+                                    </main>
+                                </Content>
+                                {
+                                    StartQuestionarie.findOne({}) && StartQuestionarie.findOne({}).status &&
+                                    Meteor.users.findOne({ _id: Meteor.userId() }) && Meteor.users.findOne({ _id: Meteor.userId() }).emails[0].address !== "pgutzu@gmail.com" &&
+                                    <Modal
+                                        title="Questionnaries"
+                                        visible={this.state.visible}
+                                        onOk={this.handleOk}
+                                    >
+                                        <Questionnaries />
+                                    </Modal>
+                                }
+
+                            </Col>
+                            <Divider type="vertical" />
+                            <Col span={4} offset={1}>
+                                <Card
+                                    hoverable
+                                    style={{ marginTop: 100 }}
+                                    cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
+                                >
+                                    <Meta title="Europe Street beat" description="www.instagram.com" />
+                                </Card>
+                            </Col>
+                        </Row>
+                        <Footer style={{ textAlign: 'center' }}>Speed Coding © 2020 Created by 1000Geeks</Footer>
+                    </Layout>
+                </div>
+            </Router>
+        )
+    }
+}
 
 App.propTypes = {
     loggingIn: PropTypes.bool.isRequired,

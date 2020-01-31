@@ -1,14 +1,13 @@
 import React from 'react'
-import TrackerReact from 'meteor/ultimatejs:tracker-react'
-import { Comment, Icon, Tooltip, Avatar } from 'antd';
+import { Comment, Avatar } from 'antd';
 import moment from 'moment';
 
 class Message extends React.Component {
 
     render() {
-        const { time, text } = this.props.message;
+        const { time, text, author } = this.props.message;
         return (<Comment
-            author={<a>Han Solo</a>}
+            author={<a>{author}</a>}
             avatar={
                 <Avatar
                     src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
@@ -20,11 +19,7 @@ class Message extends React.Component {
                     {text}
                 </p>
             }
-            datetime={
-                <Tooltip title={moment(time).format('YYYY-MM-DD HH:mm:ss')}>
-                    <span>{moment().fromNow()}</span>
-                </Tooltip>
-            }
+            datetime={<span>{moment(time).format('YYYY-MM-DD HH:mm:ss')}</span>}
         />)
     }
 }

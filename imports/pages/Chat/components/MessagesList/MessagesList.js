@@ -1,11 +1,9 @@
 import React from 'react'
-import ReactDOM from 'react-dom'
 import TrackerReact from 'meteor/ultimatejs:tracker-react'
 import Message from '../Message'
 import { Row, Col, Input } from 'antd';
-// import './pasha.scss'
 
-Messages = new Mongo.Collection("Messages", {});
+export const Messages = new Mongo.Collection("Messages", {});
 
 class MessagesList extends TrackerReact(React.Component) {
 
@@ -15,43 +13,41 @@ class MessagesList extends TrackerReact(React.Component) {
 
     handleSubmit = (event) => {
         event.preventDefault();
-
-        let message = this.state.text.trim();
-
-        let data = {
+        const message = this.state.text.trim();
+        const data = {
             time: new Date(),
-            text: message
+            text: message,
+            author: Meteor.user().username
         };
 
         Messages.insert(data);
-
         this.setState({ text: '' })
     }
 
     changeMessage = (e) => this.setState({ text: e.target.value })
-
+    deleteMessageById = (id) => Messages.remove(id);
 
     render() {
-
-
         return (
-            <div>
+            <div >
                 <Row >
                     <center>
                         <h1>Chat</h1>
                     </center>
                 </Row>
-
-                <Row style={{ height: '100px' }}>
-                    <Col span={20} offset={1}>
-                        {Messages.find({}).fetch().map((message) => <Message key={message._id} message={message} />)}
+                <Row>
+                    <Col span={20} offset={1} style={{ maxHeight: '75vh', minHeight: '75vh', overflowY: 'scroll' }}>
+                        {Messages.find({}).fetch().sort((a, b) => b.time - a.time).map((message) => <div key={message._id}>
+                            <Message message={message} deleteMessageById={this.deleteMessageById} />
+                        </div>)}
                     </Col>
                 </Row>
-
                 <Row >
-                    <form onSubmit={this.handleSubmit} >
-                        <Input placeholder="Basic usage" value={this.state.text} onChange={this.changeMessage} />
-                    </form>
+                    <Col span={20} offset={1}>
+                        <form onSubmit={this.handleSubmit} >
+                            <Input placeholder="Basic usage" value={this.state.text} onChange={this.changeMessage} />
+                        </form>
+                    </Col>
                 </Row>
             </div>
         )

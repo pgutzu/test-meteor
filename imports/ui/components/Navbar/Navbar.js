@@ -1,20 +1,18 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Menu, Button, Dropdown, Icon, Badge } from 'antd';
-import { NavLink, Redirect } from 'react-router-dom';
+import { Menu, Button, Dropdown, Icon } from 'antd';
+import { NavLink } from 'react-router-dom';
 import { Meteor } from 'meteor/meteor'
 import './Navbar.scss'
+import BadgeIndicator from './components/BadgeIndicator/BadgeIndicator';
+import TrackerReact from 'meteor/ultimatejs:tracker-react'
 
-
-
-
-
-class Navbar extends React.Component {
+class Navbar extends TrackerReact(React.Component) {
 
   handleMenuClick = (e) => {
     switch (e.key) {
       case "1": this.props.history.push('/profile'); break;
-      case "2": Meteor.logout((e) => this.props.history.push('/login')); break;
+      case "2": this.props.history.push('/admin'); break;
+      case "3": Meteor.logout((e) => this.props.history.push('/login')); break;
     }
   }
 
@@ -25,16 +23,25 @@ class Navbar extends React.Component {
           <Icon type="profile" />
           Profile
         </Menu.Item>
-        <Menu.Item key="2">
+        {
+          Meteor.users.findOne({ _id: Meteor.userId() }) && Meteor.users.findOne({ _id: Meteor.userId() }).emails !== undefined ?
+            Meteor.users.findOne({ _id: Meteor.userId() }).emails[0].address === "pgutzu@gmail.com" && <Menu.Item key="2">
+              <Icon type="star" />
+              Admin panel
+        </Menu.Item>
+            :
+            null
+        }
+        <Menu.Item key="3">
           <Icon type="logout" />
           Logout
         </Menu.Item>
       </Menu>
     );
+
     return (
       <>
-
-        <NavLink to={"/"}>
+        <NavLink to={"/users"}>
           <div className="logo"  >
           </div>
         </NavLink>
@@ -50,10 +57,7 @@ class Navbar extends React.Component {
                 <div id="components-dropdown-demo-dropdown-button">
                   <Dropdown overlay={menu} >
                     <a className="ant-dropdown-link" href="#">
-                      <Badge count={5}>
-                        <Icon type="user" />
-                        {Meteor.user().username}
-                      </Badge>
+                      <BadgeIndicator />
                     </a>
                   </Dropdown>
                 </div>
@@ -64,23 +68,6 @@ class Navbar extends React.Component {
                     </Button>
                 </NavLink>
             }
-
-            {/* <div >
-          {
-            loggedIn ?
-              <NavLink to="/auth">
-                <Button>
-                  Login
-                  </Button>
-              </NavLink>
-              :
-              <NavLink to="/login" onClick={() => Meteor.logout()}>
-                <Button>
-                  Logout
-                    </Button>
-              </NavLink>
-          }
-        </div> */}
           </Menu.Item>
         </Menu>
       </>

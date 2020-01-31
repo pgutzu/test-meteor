@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 
 import { Row, Col, Form, Icon, Input, Button, Checkbox } from 'antd';
@@ -27,7 +26,6 @@ class Login extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
         const { email, password } = values;
         Meteor.loginWithPassword(email, password, err => {
           if (err) {

@@ -4,15 +4,12 @@ import React from 'react';
 import {
   Form,
   Input,
-  Tooltip,
-  Icon,
   Checkbox,
   Button,
 } from 'antd';
 
 
 class Signup extends React.Component {
-
 
   componentDidMount() {
     if (Meteor.userId() !== null) {
@@ -32,9 +29,21 @@ class Signup extends React.Component {
     e.preventDefault();
     this.props.form.validateFieldsAndScroll((err, values) => {
       if (!err) {
-        console.log('Received values of form: ', values);
         const { username, email, password } = values;
-        Accounts.createUser({ username, email, password }, err => {
+        const profile = {
+          availableTime:
+            [
+              { date: "2020-01-14T15:00", status: 4 },
+              { date: "2020-01-14T14:00", status: 4 },
+              { date: "2020-01-14T13:00", status: 4 }
+            ],
+          myEvents: [
+            { code: "2020-01-14T15:00", status: 4 }
+          ],
+          mySubEvents: [],
+          mySkills: []
+        }
+        Accounts.createUser({ username, email, password, profile }, err => {
           if (err) {
             this.setState({ errMsg: err.reason });
             return console.log(err);
@@ -46,8 +55,6 @@ class Signup extends React.Component {
   }
 
   render() {
-    console.log(Meteor.userId(), "pashaguzu")
-
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {

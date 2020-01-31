@@ -13,7 +13,7 @@ export default class Auth extends React.Component {
         return (
             <>
                 <Row>
-                    <Col span={4} offset={10}>
+                    <Col span={8} offset={8}>
                         <h1 align="center">Meet new people at events and conferences</h1>
                         <p align="center">
                             Sign in to access your profile and book meetings with the most relevant people at events.
@@ -21,7 +21,7 @@ export default class Auth extends React.Component {
                     </Col>
                 </Row>
                 <Row>
-                    <Col span={4} offset={10}>
+                    <Col span={8} offset={8}>
                         <Button
                             block
                             type="primary"

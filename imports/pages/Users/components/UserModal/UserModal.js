@@ -1,24 +1,16 @@
-import React from 'react'
-import { Avatar, Button, Row, Col,Icon, Timeline } from 'antd'
+import React from 'react';
+import TrackerReact from 'meteor/ultimatejs:tracker-react'
+import { Avatar, Row, Col, Icon, Timeline } from 'antd'
+import moment from 'moment';
+import RequestButton from '../RequestButton'
 
-class UserModal extends React.Component {
 
-    state = {
-        visible: false
-    }
 
-    handleOk = e => {
-        this.setState({
-            visible: false,
-        });
-    };
+class UserModal extends TrackerReact(React.Component) {
 
     render() {
         const { avatar, name, company, description, availableTime } = this.props;
-        const descriptionStep = <>
-            <p>{name} is available</p>
-            <Button style={{ backgroundColor: 'green', color: 'white', borderRadius: '30px' }}>Continue</Button>
-        </>
+
         return <Row>
             <Col span={14}>
                 <Row>
@@ -32,7 +24,17 @@ class UserModal extends React.Component {
             <Col span={10}>
                 <Timeline>
                     {
-                        availableTime.map(item => <Timeline.Item color="red" dot={<Icon type="clock-circle-o" style={{ fontSize: '16px' }} />} >{item.date}  {descriptionStep}</Timeline.Item>)
+                        availableTime.map((item, i) => <Timeline.Item
+                            key={i}
+                            color="blue"
+                            dot={<Icon type="clock-circle-o" style={{ fontSize: '16px' }} />} >
+                            {moment(item.date).format('YYYY-MM-DD HH:mm')}
+                            <>
+                                <p>{name} is available</p>
+                                <RequestButton date={item.date} status={item.status} {...this.props} />
+
+                            </>
+                        </Timeline.Item>)
                     }
                 </Timeline>
             </Col>
