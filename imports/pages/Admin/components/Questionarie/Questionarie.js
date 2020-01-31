@@ -6,7 +6,7 @@ import { StartQuestionarie } from '../../../../api/startQuestionarie'
 class Questionarie extends TrackerReact(React.Component) {
 
     state = {
-        status: StartQuestionarie.findOne({}).status
+        status: StartQuestionarie.findOne({}) && StartQuestionarie.findOne({}).status
     }
 
     changeStatusQuestionnarie = () => {
