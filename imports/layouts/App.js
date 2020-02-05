@@ -21,11 +21,13 @@ import Auth from '../pages/Auth';
 import Profile from '../pages/Profile';
 import Questionnaires from '../pages/Questionnaires';
 import Admin from '../pages/Admin';
+import Advertiser from '../pages/Advertiser';
 import MessagesList from '../pages/Chat/components/MessagesList';
 import TrackerReact from 'meteor/ultimatejs:tracker-react'
-
+import AdvertisingBanner from '../ui/components/AdvertisingBanner'
 // import Spinner
 import { StartQuestionarie } from '../api/startQuestionarie';
+import { Advertisings } from '../pages/Advertiser/components/CreateAdvertising/CreateAdvertising';
 
 // import hoc to pass additional props to routes
 import PropsRoute from '../pages/PropsRoute';
@@ -62,18 +64,14 @@ class App extends TrackerReact(React.Component) {
                         </Header>
                         <Row>
                             <Col span={4}>
-                                <Card
-                                    hoverable
-                                    style={{ marginTop: 100 }}
-                                    cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
-                                >
-                                    <Meta title="Europe Street beat" description="www.instagram.com" />
-                                </Card>
+                                {
+                                    Advertisings.findOne({}, { sort: [['createdAt', 'desc']] }) && <AdvertisingBanner {...Advertisings.findOne({}, { sort: [['createdAt', 'desc']] })} />
+                                }
                             </Col>
                             <Divider type="vertical" />
                             <Col span={14} offset={1}>
                                 <Content style={{ overflow: 'auto', height: '87vh' }}>
-                                    <main>
+                                    <main> 
                                         <Switch>
                                             <PropsRoute exact path="/" component={Events} {...props} />
                                             <PropsRoute path="/join" component={JoinCode} {...props} />
@@ -88,6 +86,13 @@ class App extends TrackerReact(React.Component) {
                                                 Meteor.users.findOne({ _id: Meteor.userId() }) && Meteor.users.findOne({ _id: Meteor.userId() }).emails !== undefined ?
                                                     Meteor.users.findOne({ _id: Meteor.userId() }).emails[0].address === "pgutzu@gmail.com" &&
                                                     <PropsRoute path="/admin" component={Admin} {...props} />
+                                                    :
+                                                    null
+                                            }
+                                            {
+                                                Meteor.users.findOne({ _id: Meteor.userId() }) && Meteor.users.findOne({ _id: Meteor.userId() }).emails !== undefined ?
+                                                    Meteor.users.findOne({ _id: Meteor.userId() }).emails[0].address === "pgutzu11@gmail.com" &&
+                                                    <PropsRoute path="/advertiser" component={Advertiser} {...props} />
                                                     :
                                                     null
                                             }
@@ -109,13 +114,9 @@ class App extends TrackerReact(React.Component) {
                             </Col>
                             <Divider type="vertical" />
                             <Col span={4} offset={1}>
-                                <Card
-                                    hoverable
-                                    style={{ marginTop: 100 }}
-                                    cover={<img alt="example" src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png" />}
-                                >
-                                    <Meta title="Europe Street beat" description="www.instagram.com" />
-                                </Card>
+                                {
+                                    Advertisings.findOne({}, { sort: [['createdAt', 'desc']] }) && <AdvertisingBanner {...Advertisings.findOne({}, { sort: [['createdAt', 'desc']] })} />
+                                }
                             </Col>
                         </Row>
                         <Footer style={{ textAlign: 'center' }}>Speed Coding © 2020 Created by 1000Geeks</Footer>

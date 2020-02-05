@@ -18,6 +18,7 @@ class Questionarie extends TrackerReact(React.Component) {
         Meteor.call('createQuestionarie');
     }
 
+
     render() {
         const { status } = this.state;
         return (
@@ -35,7 +36,6 @@ class Questionarie extends TrackerReact(React.Component) {
                                 < Button type="primary" onClick={() => this.createQuestionarie()} >
                                     Create Questionarie
                                 </Button>
-
                         }
                     </Col>
                 </Row>

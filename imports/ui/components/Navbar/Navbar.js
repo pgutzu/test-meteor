@@ -12,6 +12,7 @@ class Navbar extends TrackerReact(React.Component) {
     switch (e.key) {
       case "1": this.props.history.push('/profile'); break;
       case "2": this.props.history.push('/admin'); break;
+      case "4": this.props.history.push('/advertiser'); break;
       case "3": Meteor.logout((e) => this.props.history.push('/login')); break;
     }
   }
@@ -28,6 +29,15 @@ class Navbar extends TrackerReact(React.Component) {
             Meteor.users.findOne({ _id: Meteor.userId() }).emails[0].address === "pgutzu@gmail.com" && <Menu.Item key="2">
               <Icon type="star" />
               Admin panel
+        </Menu.Item>
+            :
+            null
+        }
+        {
+          Meteor.users.findOne({ _id: Meteor.userId() }) && Meteor.users.findOne({ _id: Meteor.userId() }).emails !== undefined ?
+            Meteor.users.findOne({ _id: Meteor.userId() }).emails[0].address === "pgutzu11@gmail.com" && <Menu.Item key="4">
+              <Icon type="star" />
+              Advertiser panel
         </Menu.Item>
             :
             null
