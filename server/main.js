@@ -7,6 +7,7 @@ import '../imports/api/questionarie'
 import '../imports/api/subEvent'
 import '../imports/api/startQuestionarie'
 import '../imports/api/advertising'
+// import '../imports/api/index'
 
 
 Meteor.startup(() => {

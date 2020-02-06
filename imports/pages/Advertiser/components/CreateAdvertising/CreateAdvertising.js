@@ -3,6 +3,7 @@ import { Button, Icon, Input, Form, Select, Upload } from 'antd';
 import TrackerReact from 'meteor/ultimatejs:tracker-react'
 // import { Advertisings } from '../../../../api/advertising'
 import './FormCreateAdvertising.css'
+import InterestingSkills from '../../../JoinCode/components/InterestingSkills';
 export const Advertisings = new Mongo.Collection('Advertisings');
 class FormCreateAdvertising extends TrackerReact(React.Component) {
 
@@ -67,6 +68,12 @@ class FormCreateAdvertising extends TrackerReact(React.Component) {
                             </Upload>,
                         )}
                     </Form.Item>
+                    <Form.Item label="category" >
+                        {getFieldDecorator('category')(
+                            <InterestingSkills admin />
+                        )}
+                    </Form.Item>
+
 
                     <Button type="primary" htmlType="submit" className="create-form-button">
                         Create

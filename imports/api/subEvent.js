@@ -1,36 +1,25 @@
-SubEvent = new Mongo.Collection('SubEvent', {})
+export const SubEvent = new Mongo.Collection('SubEvent', {})
 
-// {
-// idMaster: string,
-// idGuest: string,
-// date: Date,
-// status: [requested,accepted,rejected,end]
-// }
+// SubEvent.schema = new SimpleSchema({
+//     _id: { type: String },
+//     title: { type: String },
+//     description: { type: String },
+//     date: { type: Date },
+//     speaker: { type: String, regEx: SimpleSchema.RegEx.Id, optional: true },
+//     event: { type: String }
+// });
 
-// const data = {
-//     title: 'React',
-//     description: "Lorem Ipsum is simply dummy text of the printing and typesetting industry",
-//     status: false
-// }
+// SubEvent.attachSchema(SubEvent.schema);
 
-// SubEvent.insert(data);
+
+// const listsAndTodos = SubEvent.createQuery({
+//     name: 1,
+//     todos: {
+//         text: 1
+//     }
+// }).fetch();
+// console.log(listsAndTodos,"feemvevmemvpe,rv,epr")
 
 if (Meteor.isServer) {
-    // SubEvent.methods({
-        // CreateSubEvent: function (data) {
-        //     SubEvent.insert(data);
-        // },
-        // updateStatusMeeting: function (data) {
-        //     const { id, status } = data;
-        //     console.log(status, "params")
-        //     Meeting.update(id, {
-        //         $set: { status: status }
-        //     })
-        // },
-    // })
 
-    // Meteor.publish('meetings', function () {
-    //     return Meeting.find({ idGuest: Meteor.userId() }).fetch()
-
-    // });
 }

@@ -56,7 +56,10 @@ class InterestingSkills extends TrackerReact(React.Component) {
                                 </Panel>
                             ))}
                         </Collapse>
-                        <Button type="primary" onClick={() => this.finaly()}>Final</Button>
+                        {
+                            !this.props.admin &&
+                            <Button type="primary" onClick={() => this.finaly()}>Final</Button>
+                        }
                     </Row>
                 </div>
             </>

@@ -70,6 +70,7 @@ class JoinCode extends TrackerReact(React.Component) {
                 content: <InterestingSkills {...this.props} />,
             },
         ];
+
         const { current } = this.state;
         return <div>
             <Steps current={current}>
