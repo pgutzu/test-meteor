@@ -12,7 +12,7 @@
     "antd": "^3.26.4",
     "babel-runtime": "^6.26.0",
     "bcrypt": "^3.0.7",
-    "chart.js": "^2.9.3",
+    "chart.js": "^2.9.4",
     "indexof": "0.0.1",
     "jquery": "^3.4.1",
     "meteor-node-stubs": "^1.0.0",
